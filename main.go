@@ -24,16 +24,14 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    // Allow all origins for CORS
-    w.Header().Set("Access-Control-Allow-Origin", "https://abdullah-credit-card-validator.netlify.app/")
-    w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-    w.Header().Set("Access-Control-Allow-Credentials", "true")
-
     if r.Method == http.MethodOptions {
-        w.WriteHeader(http.StatusNoContent)
-        return
-    }
+		w.Header().Set("Access-Control-Allow-Origin", "https://abdullah-credit-card-validator.netlify.app")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 
     // Handle actual POST requests
     if r.Method == http.MethodPost {
