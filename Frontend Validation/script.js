@@ -26,10 +26,10 @@ function validateCreditCard() {
     });
 }
 
-// Disable right-click
-document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-});
+// // Disable right-click
+// document.addEventListener('contextmenu', function (e) {
+//     e.preventDefault();
+// });
 
 // Additional event listener for form submission using a button
 document.getElementById('validateButton').addEventListener('click', function (e) {
