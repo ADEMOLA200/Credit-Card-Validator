@@ -25,7 +25,7 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
     // Allow all origins for CORS
-    w.Header().Set("Access-Control-Allow-Origin", "http://127.0.0.1:5501")
+    w.Header().Set("Access-Control-Allow-Origin", "https://ademola-creditcard-validator.netlify.app/")
     w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
     w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
     w.Header().Set("Access-Control-Allow-Credentials", "true")
