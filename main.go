@@ -17,7 +17,7 @@ type CreditCardRequest struct {
 func main() {
 	fmt.Println("running")
 	http.HandleFunc("/", handler)
-	err := http.ListenAndServe(":7001", nil)
+	err := http.ListenAndServe("", nil)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -25,7 +25,7 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
     // Allow all origins for CORS
-    w.Header().Set("Access-Control-Allow-Origin", "https://ademola-creditcard-validator.netlify.app/")
+    w.Header().Set("Access-Control-Allow-Origin", "https://ademola-creditcard-validator.netlify.app")
     w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
     w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
     w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -61,6 +61,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
     http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 }
+
 
 // New helper function to get the message based on card validity
 func getMessage(valid bool) string {
