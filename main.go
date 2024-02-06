@@ -17,64 +17,80 @@ type CreditCardRequest struct {
 func main() {
 	fmt.Println("running")
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/pages", ok)
 	err := http.ListenAndServe(":7001", nil)
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
+func ok(w http.ResponseWriter, r *http.Request) {
+	// Define your response data
+	responseData := map[string]string{"status": "ok"}
+
+	// Marshal the response data into JSON format
+	responseJSON, err := json.Marshal(responseData)
+	if err != nil {
+		http.Error(w, "Failed to marshal JSON", http.StatusInternalServerError)
+		return
+	}
+
+	// Set the Content-Type header to indicate JSON response
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write the JSON response to the response writer
+	w.Write(responseJSON)
+}
 func handler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
-		w.Header().Set("Access-Control-Allow-Origin", "https://credit-card-validator-frontend-production.up.railway.app/")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
-	
+
 	// Set CORS headers for POST requests
-	w.Header().Set("Access-Control-Allow-Origin", "https://plum-line-production.up.railway.app/")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 
-    // Handle actual POST requests
-    if r.Method == http.MethodPost {
-        var creditCardReq CreditCardRequest
-        // Decode the JSON data from the request body directly using json.Unmarshal
-        if err := json.NewDecoder(r.Body).Decode(&creditCardReq); err != nil {
-            // If there's an error decoding JSON, respond with a 400 Bad Request status
-            http.Error(w, "Error decoding JSON", http.StatusBadRequest)
-            return
-        }
+	// Handle actual POST requests
+	if r.Method == http.MethodPost {
+		var creditCardReq CreditCardRequest
+		// Decode the JSON data from the request body directly using json.Unmarshal
+		if err := json.NewDecoder(r.Body).Decode(&creditCardReq); err != nil {
+			// If there's an error decoding JSON, respond with a 400 Bad Request status
+			http.Error(w, "Error decoding JSON", http.StatusBadRequest)
+			return
+		}
 
-        valid, err := validateCreditCard(creditCardReq.CardNumber, creditCardReq.ExpMonth, creditCardReq.ExpYear)
-        if err != nil {
-            http.Error(w, "Error validating credit card", http.StatusInternalServerError)
-            return
-        }
+		valid, err := validateCreditCard(creditCardReq.CardNumber, creditCardReq.ExpMonth, creditCardReq.ExpYear)
+		if err != nil {
+			http.Error(w, "Error validating credit card", http.StatusInternalServerError)
+			return
+		}
 
-        response := map[string]interface{}{
-            "valid": valid,
-            "message": getMessage(valid),
-        }
-        writeJSONResponse(w, http.StatusOK, response)
-        return
-    }
+		response := map[string]interface{}{
+			"valid":   valid,
+			"message": getMessage(valid),
+		}
+		writeJSONResponse(w, http.StatusOK, response)
+		return
+	}
 
-    http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+	http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 }
-
 
 // New helper function to get the message based on card validity
 func getMessage(valid bool) string {
-    if valid {
-        return "Card is valid"
-    }
-    return "Card is not valid"
+	if valid {
+		return "Card is valid"
+	}
+	return "Card is not valid"
 }
-
 
 // Luhn algorithm-based credit card number validation
 func isValidCreditCardNumber(cardNumber string) bool {
