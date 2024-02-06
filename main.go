@@ -24,7 +24,7 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    if r.Method == http.MethodOptions {
+	if r.Method == http.MethodOptions {
 		w.Header().Set("Access-Control-Allow-Origin", "https://credit-card-validator-frontend-production.up.railway.app/")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -32,6 +32,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
+	
+	// Set CORS headers for POST requests
+	w.Header().Set("Access-Control-Allow-Origin", "https://plum-line-production.up.railway.app/")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
 
     // Handle actual POST requests
     if r.Method == http.MethodPost {
