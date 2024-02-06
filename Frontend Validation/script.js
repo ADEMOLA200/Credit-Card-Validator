@@ -9,7 +9,7 @@ function validateCreditCard() {
         exp_year: expYear
     };
 
-    fetch('https://ademola-creditcard-validator.netlify.app', {
+    fetch('https://ademola-creditcard-validator.netlify.app/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
