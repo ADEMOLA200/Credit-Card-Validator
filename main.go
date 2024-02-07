@@ -23,7 +23,7 @@ func main() {
 
 	fmt.Println(port)
 
-	err := http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServe(port, nil)
 	if err != nil {
 		fmt.Println(err)
 	}
