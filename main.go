@@ -50,20 +50,17 @@ func ok(w http.ResponseWriter, r *http.Request) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodOptions {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
-
-	// Set CORS headers for POST requests
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	 // Set CORS headers for all requests
+	 w.Header().Set("Access-Control-Allow-Origin", "https://credit-card-validator-frontend-production.up.railway.app")
+	 w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	 w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	 w.Header().Set("Access-Control-Allow-Credentials", "true")
+ 
+	 // Handle preflight requests
+	 if r.Method == http.MethodOptions {
+		 w.WriteHeader(http.StatusNoContent)
+		 return
+	 }
 
 	// Handle actual POST requests
 	if r.Method == http.MethodPost {
