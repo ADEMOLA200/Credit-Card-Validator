@@ -18,7 +18,7 @@ type CreditCardRequest struct {
 func main() {
 	fmt.Println("running")
 
-	// http.HandleFunc("/", handler)
+	http.HandleFunc("/", handler)
 	http.HandleFunc("/pages", ok)
 
 	port := os.Getenv("PORT")
