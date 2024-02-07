@@ -25,9 +25,27 @@ func main() {
 
 	fmt.Println("running on port: ", port)
 
-	err := http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServe(":"+port, allowCORS(http.DefaultServeMux))
 	if err != nil {
 		fmt.Println(err)
+	}
+}
+
+func allowCORS(handler http.Handler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Set CORS headers for all requests
+		w.Header().Set("Access-Control-Allow-Origin", "https://credit-card-validator-frontend-production.up.railway.app")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+
+		// Handle preflight requests
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		handler.ServeHTTP(w, r)
 	}
 }
 
@@ -50,18 +68,6 @@ func ok(w http.ResponseWriter, r *http.Request) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	 // Set CORS headers for all requests
-	 w.Header().Set("Access-Control-Allow-Origin", "https://credit-card-validator-frontend-production.up.railway.app")
-	 w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-	 w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	 w.Header().Set("Access-Control-Allow-Credentials", "true")
- 
-	 // Handle preflight requests
-	 if r.Method == http.MethodOptions {
-		 w.WriteHeader(http.StatusNoContent)
-		 return
-	 }
-
 	// Handle actual POST requests
 	if r.Method == http.MethodPost {
 		var creditCardReq CreditCardRequest
