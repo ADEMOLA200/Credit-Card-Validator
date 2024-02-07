@@ -34,7 +34,7 @@ func main() {
 func allowCORS(handler http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Set CORS headers for all requests
-		w.Header().Set("Access-Control-Allow-Origin", "https://credit-card-validator-frontend-production.up.railway.app")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
