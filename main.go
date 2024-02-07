@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 type CreditCardRequest struct {
@@ -18,7 +19,11 @@ func main() {
 	// http.HandleFunc("/", handler)
 	http.HandleFunc("/pages", ok)
 
-	err := http.ListenAndServe(":7001", nil)
+	port := os.Getenv("PORT")
+
+	fmt.Println(port)
+
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		fmt.Println(err)
 	}
